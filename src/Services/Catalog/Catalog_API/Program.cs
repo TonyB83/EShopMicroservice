@@ -3,6 +3,7 @@ using BuildingBlocks.Exceptions.Handler;
 using Carter;
 using Catalog_API.Data;
 using FluentValidation;
+using HealthChecks.UI.Client;
 using Marten;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
@@ -21,8 +22,8 @@ builder.Services.AddMediatR(config =>
 builder.Services.AddValidatorsFromAssembly(assembly);
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
-builder.Services.AddHealthChecks();
-    //.AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
+builder.Services.AddHealthChecks()
+    .AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
 
 builder.Services.AddMarten(opts =>
 {
@@ -36,11 +37,11 @@ builder.Services.AddCarter();
 
 var app = builder.Build();
 
-app.UseHealthChecks("/health");
-    //new HealthCheckOptions
-    //{
-    //    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-    //});
+app.UseHealthChecks("/health",
+    new HealthCheckOptions
+    {
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
 
 // Configure the HTTP request pipeline.
 app.MapCarter();
