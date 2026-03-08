@@ -5,6 +5,12 @@ services:
   basketdb:
     image: postgres
   
+  orderdb:
+    image: mcr.microsoft.com/mssql/server
+
+  messagebroker:
+    image: rabbitmq:management
+
   distributedcache:
     image: redis
 
@@ -26,7 +32,21 @@ services:
       context: .
       dockerfile: Services/Discount/Discount.Grpc/Dockerfile
 
+  ordering.api:
+    image: ${DOCKER_REGISTRY-}orderingapi
+    build:
+      context: .
+      dockerfile: Services/Ordering/Ordering.API/Dockerfile
+
+  yarpapigateway:
+    image: ${DOCKER_REGISTRY-}yarpapigateway
+    build:
+      context: .
+      dockerfile: YarpApiGateway/YarpApiGateway/Dockerfile
+
 volumes:
   postgres_catalog:
   postgres_basket:
+
+
 

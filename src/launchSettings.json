@@ -5,7 +5,9 @@
       "commandVersion": "1.0",
       "serviceActions": {
         "catalog_api": "StartDebugging",
-        "discount.grpc": "StartDebugging"
+        "discount.grpc": "StartDebugging",
+        "ordering.api": "StartDebugging",
+        "yarpapigateway": "StartDebugging"
       }
     }
   }
